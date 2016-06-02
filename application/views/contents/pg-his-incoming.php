@@ -2,13 +2,13 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">History Detail NG Customer</h3>
+                <h3 class="box-title">Kedatangan NG Customer</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="div-filter">                    
                     <form class="form-horizontal">
                         <div class="form-group form-inline">
-                            <label for="cust-name" class="col-sm-2 control-label">Request Date </label>
+                            <label for="cust-name" class="col-sm-2 control-label">Tanggal Kedatangan</label>
                             <div class="col-sm-9 form-group">
                                 <input type="date" class="form-control"> - 
                                 <input type="date" class="form-control">
@@ -36,8 +36,8 @@
                 <table id="tbl-customers" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Detail ID</th>
-                            <th>NG ID</th>
+                            <th>CAPengirimanID</th>
+                            <th>NGID</th>
                             <th>Submit Date</th>
                             <th>Deskripsi</th>
                             <th>Action</th>
@@ -90,12 +90,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h2 class="modal-title">Upload Data Detail NG Customer</h2>
+                <h2 class="modal-title">Upload CIPL & AWB Pengiriman</h2>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="cust-name" class="col-sm-3 control-label">DetailID</label>
+                        <label for="cust-name" class="col-sm-3 control-label">CAPengirimanID</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="cust-name" disabled="">
                         </div>

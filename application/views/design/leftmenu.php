@@ -61,7 +61,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="<?= base_url('history/incoming'); ?>">
                     <i class="fa fa-user"></i> <span>NG Customer</span>
                 </a>
             </li>

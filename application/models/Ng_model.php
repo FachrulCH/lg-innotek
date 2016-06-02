@@ -34,7 +34,8 @@ class Ng_model extends CI_Model {
         }
 
         $this->db->replace('ng_items', $this);
-
+        $this->simpanDetail();
+        
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
         } else {
@@ -74,6 +75,39 @@ class Ng_model extends CI_Model {
         
         $query = $this->db->get();
         return $query->result_array();
+    }
+    
+    public function filterPageNGdata($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+        $customer = @$param['customer'];
+        
+        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        
+        if($start){
+            $this->db->where('ng_items.req_date >=',$start);
+        }
+        
+        if($end){
+            $this->db->where('ng_items.req_date <=',$end);
+        }
+        
+        if($customer != ''){
+            $this->db->where('ng_items.cust_id',$customer);
+        }
+        
+        $query = $this->db->get();
+        return $query->result_array();
+        
+    }
+    
+    public function simpanDetail() {
+        $row['id'] = $this->sequences->getLastId('sqngdetail');
+        $row['ng_item_id'] = $this->id;
+        
+        return $this->db->insert('ng_detail', $row);
     }
 
 }

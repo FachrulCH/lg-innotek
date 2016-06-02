@@ -38,12 +38,14 @@
         <script src="<?= base_url('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>" type="text/javascript"></script>
         <script type="text/javascript">
             BASE_URL = "<?= base_url(); ?>";
-            function loading_on(){
+            function loading_on() {
                 $('#modal-loading').modal('show');
             }
-            
-            function loading_off(){
-                $('#modal-loading').modal('hide');
+
+            function loading_off() {
+                setTimeout(function () {
+                    $('#modal-loading').modal('hide');
+                }, 500);
             }
         </script>
     </head>

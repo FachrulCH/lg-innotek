@@ -175,7 +175,7 @@
                                 <option value="0">-Pilih Part no-</option>
                                 <?php
                                 foreach ($product_list as $product) {
-                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] . '</option>';
+                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] .' ('.$product['model'] .')'. '</option>';
                                 }
                                 ?>
                             </select>
@@ -243,15 +243,14 @@
 <script src="<?= base_url('assets/plugins/daterangepicker/daterangepicker.js'); ?>"></script>
 <script src='<?= base_url('assets/js/common.js'); ?>'></script>
 <script type="text/javascript">
-    $(function () {
-        $('#ng-date').val(moment().format('MMMM D, YYYY'));
-//        $("#tbl-customers").DataTable();
-
-        window.produk = {<?php
+    window.produk = {<?php
                                 foreach ($product_list as $product) {
                                     echo '"' . $product['part_no'] . '":"' . $product['model'] . '",';
                                 }
                                 ?>};
+    $(function () {
+        $('#ng-date').val(moment().format('MMMM D, YYYY'));
+//        $("#tbl-customers").DataTable();
 
         $('#ng-part').on('change', function () {
             idx = $('#ng-part').val();
@@ -339,19 +338,15 @@
                         {
                             data: 'status', render: function (status) {
                                 if (status == 0) {
-                                    var el = '<button class="btn btn-warning btn-xs btn-edit"><i class="fa fa-edit"></i> Request</button>';
-                                }
-                                else if (status == 1) {
-                                    var el = '<button class="btn btn-warning btn-xs btn-edit"><i class="fa fa-edit"></i> Progress 1</button>';
-                                }
-                                else if (status == 2) {
-                                    var el = '<button class="btn btn-warning btn-xs btn-edit"><i class="fa fa-edit"></i> Progress 2</button>';
-                                }
-                                else if (status == 3) {
-                                    var el = '<button class="btn btn-warning btn-xs btn-edit"><i class="fa fa-edit"></i> Progress 3</button>';
-                                }
-                                else if (status == 4) {
-                                    var el = '<button class="btn btn-warning btn-xs btn-edit"><i class="fa fa-edit"></i> Closed</button>';
+                                    var el = '<span class="label label-warning"><i class="fa fa-life-bouy"></i> Request</span>';
+                                } else if (status == 1) {
+                                    var el = '<span class="label label-info"><i class="fa fa-cogs"></i> Progress 1</span>';
+                                } else if (status == 2) {
+                                    var el = '<span class="label label-info"><i class="fa fa-cogs"></i> Progress 2</span>';
+                                } else if (status == 3) {
+                                    var el = '<span class="label label-info"><i class="fa fa-cogs"></i> Progress 3</span>';
+                                } else if (status == 4) {
+                                    var el = '<span class="label label-success"><i class="fa fa-ship"></i> Closed</span>';
                                 }
                                 return el;
                             }
