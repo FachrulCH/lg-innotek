@@ -29,6 +29,11 @@
                 </a>
             </li>
             <li>
+                <a href="<?= base_url('history/incoming'); ?>">
+                    <i class="fa fa-user"></i> <span>NG Customer</span>
+                </a>
+            </li>
+            <li>
                 <a href="<?= base_url('customer/service/'); ?>">
                     <i class="fa fa-comments"></i> <span>Customer Service</span>
                 </a>
@@ -38,7 +43,7 @@
                 <ul class="treeview-menu">
                     <li><a href="<?= base_url('history/ngdata'); ?>"><i class="fa fa fa-user"></i> Detail NG Data</a></li>
                     <li><a href="<?= base_url('history/ngcust'); ?>"><i class="fa fa-user-md"></i> CA Customer</a></li>
-                    <li><a href="<?= base_url('history/car'); ?>"><i class="fa fa-user-md"></i> CAR</a></li>
+                    <li><a href="<?= base_url('history/ngcar'); ?>"><i class="fa fa-user-md"></i> CAR</a></li>
                     <li><a href="<?= base_url('history/pengiriman'); ?>"><i class="fa fa-user-md"></i> CA Pengiriman</a></li>
                 </ul>
             </li>
@@ -60,11 +65,7 @@
 
                 </ul>
             </li>
-            <li>
-                <a href="<?= base_url('history/incoming'); ?>">
-                    <i class="fa fa-user"></i> <span>NG Customer</span>
-                </a>
-            </li>
+            
 
         </ul>
     </section>

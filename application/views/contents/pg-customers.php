@@ -84,7 +84,7 @@
                     <div class="form-group">
                         <label for="cust-telp" class="col-sm-4 control-label">Telephone</label>
                         <div class="col-sm-8">
-                            <input type="tel" class="form-control" id="cust-telp" placeholder="telp" name="No telp" required="" maxlength="15">
+                            <input type="tel" class="form-control" id="cust-telp" placeholder="telp" name="no_telp" required="" maxlength="15">
                         </div>
                     </div>
                     <div class="form-group">

@@ -29,12 +29,16 @@
                         </div>
                         <div class="form-group">
                             <label for="cust-name" class="col-sm-2 control-label">Customer Name</label>
-                            <div class="col-sm-2">
-                                <select class="form-control">
+                            <div class="col-sm-3">
+                                <select class="form-control" name="customer">
                                     <option>-Pilih Customer-</option>
                                     <?php
                                     foreach ($list_customer as $customer) {
-                                        echo '<option value="' . $customer['id'] . '">' . $customer['name'] . '</option>';
+                                        $active = "";
+                                        if ($customer['id'] == @$get_data['customer']) {
+                                            $active = 'selected=""';
+                                        }
+                                        echo '<option value="' . $customer['id'] . '" ' . $active . '>' . $customer['name'] . '</option>';
                                     }
                                     ?>
                                 </select>
@@ -49,13 +53,12 @@
                 </div>
 
 
-
-
                 <table id="tbl-customers" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>NG ID</th>
-                            <th>Submit Date</th>
+                            <th>Request Date</th>
+                            <th>Upload Date</th>
                             <th>Deskripsi</th>
                             <th>Action</th>
                         </tr>
@@ -64,22 +67,24 @@
                         <?php
                         if (count($detail_data) > 0) {
                             foreach ($detail_data as $idx => $detail) {
-                                $tgl = (is_null($detail['ng_sub_date'])) ? '(kosong)' : $detail['ng_sub_date'];
+                                $tgl = (is_null($detail['ng_sub_date'])) ? '(kosong)' : format_tgl($detail['ng_sub_date']);
                                 $desc = (is_null($detail['ng_result'])) ? '(kosong)' : $detail['ng_result'];
                                 echo '<tr data-idx="' . $idx . '">
                                         <td>' . $detail['ng_item_id'] . '</td>
+                                        <td>' . format_tgl($detail['req_date']) . '</td>
                                         <td>' . $tgl . '</td>
                                         <td>' . $desc . '</td>
                                         <td>';
                                 // kalo masih lom di upload tombol download jadi non
                                 if ($detail['ng_file_name'] !== null) {
-                                    echo'<button class="btn btn-success btn-xs btn-download"><i class="fa fa-download"></i> Download</button>';
+                                    echo'<a href="' . base_url() . 'unduh/file/' . $detail['ng_file_name'] . '" class="btn btn-success btn-xs btn-download"><i class="fa fa-download"></i> Download</a> ';
+                                    echo '<button class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i> Delete</button>';
                                 } else {
-                                    echo'<button class="btn btn-info btn-xs btn-download" disabled="disabled"><i class="fa fa-download"></i> Download</button>';
+                                    echo'<button class="btn btn-info btn-xs btn-download" disabled="disabled"><i class="fa fa-download"></i> Download</button> ';
+                                    echo '<button class="btn btn-danger btn-xs btn-delete" disabled="disabled"><i class="fa fa-trash" ></i> Delete</button>';
                                 }
 
                                 echo'
-                                            <button class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i> Delete</button>
                                         </td>
                                     </tr>';
                             }
@@ -103,39 +108,41 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h2 class="modal-title">Upload Data Detail NG Customer</h2>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="cust-name" class="col-sm-3 control-label">NGID</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="mdl-ng-id" disabled="">
-                        </div>
+            <div class="modal-body form-horizontal">
+                <!--<form class="form-horizontal" action="<?= base_url('history/simpanngdetail') ?>" method="post">-->
+                <?php echo form_open_multipart('history/simpanngdetail'); ?>
+                <div class="form-group">
+                    <label for="cust-name" class="col-sm-3 control-label">NGID</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="mdl-ng-id" readonly="" name="mdl-ng-id">
+                        <input type="hidden" name="mdl-cust-name" id="mdl-cust-name">
                     </div>
-                    <div class="form-group">
-                        <label for="cust-name" class="col-sm-3 control-label">Submit Date</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="mdl-sub-date" disabled="">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="cust-name" class="col-sm-3 control-label">Submit Date</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="mdl-sub-date" disabled="">
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">File</label>
-                        <div class="col-sm-9">
-                            <input type="file" class="form-control"/>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-3 control-label">File</label>
+                    <div class="col-sm-9">
+                        <input type="file" class="form-control" name="fileupload"/>
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">Deskripsi</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" rows="5" name="mdl-desc" id="mdl-desc"></textarea>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-3 control-label">Deskripsi</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" rows="5" name="mdl-desc" id="mdl-desc"></textarea>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button type="submit" class="btn btn-default">Save</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
-                            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn btn-default">Save</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -153,11 +160,16 @@
                 <h2 class="modal-title">Confirm</h2>
             </div>
             <div class="modal-body">
-                Are you sure to delete this item?
+                Are you sure to delete this file upload and rollback status to <b>Request</b>?
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger">Yes</button>
-                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <form action="<?= base_url('history/hapusngdetail') ?>" method="post">
+                    <input type="hidden" name="delete-ng" id="delete-ng">
+                    <input type="hidden" name="delete-user" id="delete-user">
+                    <input type="hidden" name="delete-file" id="delete-file">
+                    <button class="btn btn-danger" type="submit">Yes</button>
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </form>
             </div>
         </div>
     </div>
@@ -180,7 +192,8 @@ if (count($detail_data) > 0) {
             $('#mdl-ng-id').val(datanya.ng_item_id);
             $('#mdl-sub-date').val(moment().format('YYYY-MM-DD'));
             $('#mdl-desc').html(datanya.ng_result);
-            
+            $('#mdl-cust-name').val(datanya.cust_id);
+
             $('#mdl-tambah').modal('show');
         });
 
@@ -189,6 +202,21 @@ if (count($detail_data) > 0) {
         });
 
         $('.btn-delete').on('click', function () {
+            try {
+                if (dataIdx) {
+                   var datanya = NG_DETAIL[dataIdx];
+                }
+            } catch (e) {
+                console.log("lom tau");
+                var tr = $(this).parents('tr');
+                dataIdx = $(tr).attr('data-idx');
+                var datanya = NG_DETAIL[dataIdx];
+            }
+
+            $('#delete-ng').val(datanya.ng_item_id);
+            $('#delete-user').val(datanya.cust_id);
+            $('#delete-file').val(datanya.ng_file_name);
+
             $('#mdl-hapus').modal('show');
         });
 
@@ -212,8 +240,15 @@ if (count($detail_data) > 0) {
 
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
-        cb(moment().subtract(7, 'days'), moment());
-
+<?php
+if (!is_null(@$get_data['startdate']) && !is_null(@$get_data['enddate'])) {
+    echo 'cb(moment("' . $get_data['startdate'] . '"), moment("' . $get_data['enddate'] . '"));';
+} else {
+    ?>
+            cb(moment().subtract(7, 'days'), moment());
+    <?php
+}
+?>
         $('#reportrange').daterangepicker({
             ranges: {
                 'Today': [moment(), moment()],
