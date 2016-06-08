@@ -42,7 +42,7 @@ WS = {
 
 TABEL = {
     name: "",
-    data: {},
+    data: [],
     obj: {},
     newRow: {},
     api: "",

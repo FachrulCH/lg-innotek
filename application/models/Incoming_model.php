@@ -45,8 +45,10 @@ class Incoming_model extends CI_Model {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
         
-        $this->db->select('*');
+        $this->db->select('ng_incoming.id, ng_incoming.date, ng_incoming.cust_id, ng_incoming.empl_id, ng_incoming.part_no, ng_incoming.no_cipl, ng_incoming.no_awb, master_product.model, lg_customer.name as cust_name');
         $this->db->from('ng_incoming');
+        $this->db->join('master_product', 'master_product.part_no=ng_incoming.part_no');
+        $this->db->join('lg_customer', 'lg_customer.id = ng_incoming.cust_id');
 
         if ($start) {
             $this->db->where('date >=', $start);
@@ -58,6 +60,10 @@ class Incoming_model extends CI_Model {
         
         $query = $this->db->get();
         return $query->result_array();
+    }
+    
+    public function hapus($row) {
+        $this->db->delete('ng_incoming', $row);
     }
 
 }

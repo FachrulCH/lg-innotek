@@ -43,7 +43,7 @@
                         <tr>
                             <th>Incoming ID</th>
                             <th>Incoming Date</th>
-                            <th>Customer ID</th>
+                            <th>Customer Name</th>
                             <th>Part No</th>
                             <th>Model</th>
                             <th>No CIPL Customer</th>
@@ -58,38 +58,17 @@
                             foreach ($detail_data as $idx => $detail) {
                                 echo '
                                     <tr data-idx="' . $idx . '">
-                                        <td>'.$detail['id'].'</td>
-                                        <td>'.$detail['date'].'</td>
-                                        <td>'.$detail['cust_id'].'</td>
-                                        <td>'.$detail['part_no'].'</td>
-                                        <td>'.$detail['part_no'].'</td>
-                                        <td>'.$detail['no_cipl'].'</td>
-                                        <td>'.$detail['no_awb'].'</td>
-                                        <td>'.$detail['empl_id'].'</td>
-                                        <td><a class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit</a> | <a  class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                        <td>' . $detail['id'] . '</td>
+                                        <td>' . $detail['date'] . '</td>
+                                        <td>' . $detail['cust_name'] . '</td>
+                                        <td>' . $detail['part_no'] . '</td>
+                                        <td>' . $detail['model'] . '</td>
+                                        <td>' . $detail['no_cipl'] . '</td>
+                                        <td>' . $detail['no_awb'] . '</td>
+                                        <td>' . $detail['empl_id'] . '</td>
+                                        <td><a class="btn btn-success btn-xs btn-edit"><i class="fa fa-edit"></i> Edit</a> | <a  class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash-o"></i> Delete</a></td>
                                     </tr>
                                 ';
-                                
-                                
-//                                $tgl = (is_null($detail['ng_sub_date'])) ? '(kosong)' : $detail['ng_sub_date'];
-//                                $desc = (is_null($detail['ng_result'])) ? '(kosong)' : $detail['ng_result'];
-//                                echo '<tr data-idx="' . $idx . '">
-//                                        <td>' . $detail['ng_item_id'] . '</td>
-//                                        <td>' . $detail['req_date'] . '</td>
-//                                        <td>' . $tgl . '</td>
-//                                        <td>' . $desc . '</td>
-//                                        <td>';
-//                                // kalo masih lom di upload tombol download jadi non
-//                                if ($detail['ng_file_name'] !== null) {
-//                                    echo'<a href="' . base_url() . 'unduh/file/' . $detail['ng_file_name'] . '" class="btn btn-success btn-xs btn-download"><i class="fa fa-download"></i> Download</a>';
-//                                } else {
-//                                    echo'<button class="btn btn-info btn-xs btn-download" disabled="disabled"><i class="fa fa-download"></i> Download</button>';
-//                                }
-//
-//                                echo'
-//                                            <button class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i> Delete</button>
-//                                        </td>
-//                                    </tr>';
                             }
                         }
                         ?>
@@ -98,7 +77,14 @@
                 <br/>
                 <div id="pilihan-aksi">
                     <button class="btn btn-success" id="btn-add"> <i class="fa fa-plus"></i> Add</button>
-                    <button class="btn btn-default" id="btn-print"> <i class="fa fa-print"></i> Print</button>
+                    <?php
+                    if (count($detail_data) > 0) {
+                        $get = $this->input->get();
+                        ?>
+                        <a href="<?= base_url('report/incoming?startdate=' . $get['startdate'] . '&enddate=' . $get['enddate'] . ''); ?>" target="_blank" class="btn btn-default" id="btn-print"> <i class="fa fa-print"></i> Print</a>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div><!-- /.box-body -->
         </div><!-- /.box -->
@@ -129,7 +115,7 @@
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-3 control-label">Customer Name</label>
                         <div class="col-sm-9">
-                            <select class="form-control" name="customer">
+                            <select class="form-control" name="customer" id="mdl-cust">
                                 <option>-Pilih Customer-</option>
                                 <?php
                                 foreach ($list_customer as $customer) {
@@ -150,7 +136,7 @@
                                 <option value="0">-Pilih Part no-</option>
                                 <?php
                                 foreach ($product_list as $product) {
-                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] . ' (' . $product['model'] . ')' . '</option>';
+                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -198,7 +184,7 @@
                 <h2 class="modal-title">Confirm</h2>
             </div>
             <div class="modal-body">
-                Are you sure to delete this file upload?
+                Are you sure to delete this data?
             </div>
             <div class="modal-footer">
                 <form action="<?= base_url('history/hapusngincoming') ?>" method="post">
@@ -219,16 +205,16 @@
 <?php
 if (count(@$detail_data) > 0) {
     echo 'window.NG_DETAIL=' . json_encode($detail_data) . ';';
-}else{
+} else {
     echo "$('#tbl-incoming').hide();";
 }
 ?>
     window.produk = {<?php
-                                foreach ($product_list as $product) {
-                                    echo '"' . $product['part_no'] . '":"' . $product['model'] . '",';
-                                }
-                                ?>};
-                                        
+foreach ($product_list as $product) {
+    echo '"' . $product['part_no'] . '":"' . $product['model'] . '",';
+}
+?>};
+
     newForm = function (tipe) {
         $('#mdl-sub-date').val(moment().format('YYYY-MM-DD'));
 
@@ -236,10 +222,15 @@ if (count(@$detail_data) > 0) {
             $('#mdl-tambah').modal('show');
         } else {
             var datanya = NG_DETAIL[dataIdx];
-            $('#mdl-ng-id').val(datanya.ng_item_id);
+
+            console.log("edit");
+            $('#mdl-ng-id').val(datanya.id);
+            $('#mdl-cust').val(datanya.cust_id);
             $('#mdl-sub-date').val(moment().format('YYYY-MM-DD'));
-            $('#mdl-desc').html(datanya.ng_result);
-            $('#mdl-cust-name').val(datanya.cust_id);
+            $('#ng-part').val(datanya.part_no);
+            $('#ng-model').val(datanya.model);
+            $('#mdl-cipl').val(datanya.no_cipl);
+            $('#mdl-awb').val(datanya.no_awb);
 
             $('#mdl-tambah').modal('show');
         }
@@ -252,29 +243,27 @@ if (count(@$detail_data) > 0) {
         });
 
         $('.btn-edit').on('click', function () {
-            $('#mdl-tambah').modal('show');
+
+            var tr = $(this).parents('tr');
+            window.dataIdx = $(tr).attr('data-idx');
+
+            newForm('edit');
         });
-        
+
         $('#ng-part').on('change', function () {
             idx = $('#ng-part').val();
             $('#ng-model').val(produk[idx]);
         });
-        
-        $('.btn-delete').on('click', function () {
-            try {
-                if (dataIdx) {
-                    var datanya = NG_DETAIL[dataIdx];
-                }
-            } catch (e) {
-                console.log("lom tau");
-                var tr = $(this).parents('tr');
-                dataIdx = $(tr).attr('data-idx');
-                var datanya = NG_DETAIL[dataIdx];
-            }
 
-            $('#delete-ng').val(datanya.ng_item_id);
+        $('.btn-delete').on('click', function () {
+
+            var tr = $(this).parents('tr');
+            dataIdx = $(tr).attr('data-idx');
+            var datanya = NG_DETAIL[dataIdx];
+
+            $('#delete-ng').val(datanya.id);
             $('#delete-user').val(datanya.cust_id);
-            $('#delete-file').val(datanya.ng_file_name);
+            $('#delete-file').val();
 
             $('#mdl-hapus').modal('show');
         });

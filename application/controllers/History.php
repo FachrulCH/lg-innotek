@@ -128,7 +128,7 @@ class History extends CI_Controller {
         $data['product_list'] = $this->product_model->semua();
         
         $this->load->model('incoming_model');
-        $data['detail_data'] = $this->incoming_model->semua();
+        //$data['detail_data'] = $this->incoming_model->semua();
         
         $get = $this->input->get();
         $data['get_data'] = $this->security->xss_clean($get);
@@ -392,6 +392,21 @@ class History extends CI_Controller {
         
         $this->load->model('incoming_model');
         $this->incoming_model->simpan($row);
+        redirect('history/incoming');
+//        echo "<pre>";
+//        print_r($data);
+//        die();
+    }
+    public function hapusngincoming() {
+        $post = $this->input->post();
+        $data = $this->security->xss_clean($post);
+        
+        $row = array(
+            "id" => $data['delete-ng']
+        );
+        
+        $this->load->model('incoming_model');
+        $this->incoming_model->hapus($row);
         redirect('history/incoming');
 //        echo "<pre>";
 //        print_r($data);

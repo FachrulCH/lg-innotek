@@ -24,7 +24,7 @@
                             <label for="cust-name" class="col-sm-2 control-label">Status</label>
                             <div class="col-sm-2">
                                 <select class="form-control" name="status">
-                                    <option value="*">-Semua status-</option>
+                                    <option value="all">-Semua status-</option>
                                     <?php
                                     $param = $this->session->param['status'];
                                     foreach ($param as $key => $value) {
@@ -39,7 +39,7 @@
                             <label for="cust-name" class="col-sm-2 control-label">Model</label>
                             <div class="col-sm-2">
                                 <select class="form-control" name="model">
-                                    <option value="*">-Semua model-</option>
+                                    <option value="all">-Semua model-</option>
                                     <?php
                                     foreach ($product_list as $product) {
                                         echo '<option value="' . $product['model'] . '">' . $product['model'] . '</option>';
@@ -79,56 +79,17 @@
                             </tr>
                         </thead>
                         <tbody>
-<!--                            <tr>
-                                <td>A1111</td>
-                                <td>Unyil</td>
-                                <td>01-Jan-2016</td>
-                                <td>121212</td>
-                                <td>Monitor</td>
-                                <td>2</td>
-                                <td>-</td>
-                                <td><a href="#">View data detail</a></td>
-                                <td><a href="#">View CIPL & AWB Customer</a></td>
-                                <td><a href="#">View CAR</a></td>
-                                <td><a href="#">View CIPL & AWB Pengiriman</a></td>
-                                <td>00119900</td>
-                                <td>In Progress</td>
-                            </tr>
-                            <tr>
-                                <td>A1111</td>
-                                <td>Usro</td>
-                                <td>01-Jan-2016</td>
-                                <td>121212</td>
-                                <td>Monitor</td>
-                                <td>2</td>
-                                <td>-</td>
-                                <td><a href="#">View data detail</a></td>
-                                <td><a href="#">View CIPL & AWB Customer</a></td>
-                                <td><a href="#">View CAR</a></td>
-                                <td><a href="#">View CIPL & AWB Pengiriman</a></td>
-                                <td>00119900</td>
-                                <td>In Progress</td>
-                            </tr>
-                            <tr>
-                                <td>A1111</td>
-                                <td>Raden</td>
-                                <td>01-Jan-2016</td>
-                                <td>121212</td>
-                                <td>Monitor</td>
-                                <td>2</td>
-                                <td>-</td>
-                                <td><a href="#">View data detail</a></td>
-                                <td><a href="#">View CIPL & AWB Customer</a></td>
-                                <td><a href="#">View CAR</a></td>
-                                <td><a href="#">View CIPL & AWB Pengiriman</a></td>
-                                <td>00119900</td>
-                                <td>In Progress</td>
-                            </tr>-->
-
                         </tbody>
                     </table>
                 </div>
-                <button class="btn btn-success" id="btn-add"> <i class="fa fa-plus"></i> Request Service</button>
+                <?php
+                if ($this->session->level == 'CUS' || $this->session->level === 'ADM') {
+                    $btn_status = "";
+                }else{
+                    $btn_status = "disabled='disabled'";
+                }
+                ?>
+                <button class="btn btn-success" id="btn-add" <?= $btn_status ?>> <i class="fa fa-plus"></i> Request Service</button>
                 <button class="btn btn-default" id="btn-print"> <i class="fa fa-print"></i> Print</button>
             </div><!-- /.box-body -->
         </div><!-- /.box -->
@@ -175,7 +136,7 @@
                                 <option value="0">-Pilih Part no-</option>
                                 <?php
                                 foreach ($product_list as $product) {
-                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] .' ('.$product['model'] .')'. '</option>';
+                                    echo '<option value="' . $product['part_no'] . '">' . $product['part_no'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -243,6 +204,7 @@
 <script src="<?= base_url('assets/plugins/daterangepicker/daterangepicker.js'); ?>"></script>
 <script src='<?= base_url('assets/js/common.js'); ?>'></script>
 <script type="text/javascript">
+    window.base_url = "<?= base_url() ?>";
     window.produk = {<?php
                                 foreach ($product_list as $product) {
                                     echo '"' . $product['part_no'] . '":"' . $product['model'] . '",';
@@ -258,6 +220,7 @@
         });
 
         $('#btn-add').on('click', function () {
+            console.log('btn add neh');
             $('#mdl-tambah').modal('show');
         });
 
@@ -291,9 +254,10 @@
         $('#form-filter').on('submit', function (e) {
             e.preventDefault();
             var data = $('#form-filter').serialize();
-
+            $('#btn-print').attr("href", base_url + 'report/historycust?' + data);
             loading_on();
             WS.data = data;
+            $('#btn-print').hide();
             WS.post('nghistory', function () {
 
                 setTimeout(function () {
@@ -302,9 +266,13 @@
 
                     TABEL.name = "#tbl-customers";
                     TABEL.data = WS.result.response_data.ng_data;
+                    if (TABEL.data.length > 0) {
+                        $('#btn-print').show();
+                    }
+
                     TABEL.kolom = [
                         {data: 'id'},
-                        {data: 'cust_id'},
+                        {data: 'cust_name'},
                         {data: 'req_date'},
                         {data: 'part_no'},
                         {
