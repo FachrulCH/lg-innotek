@@ -54,7 +54,7 @@ class Ng_model extends CI_Model {
         $status = @$param['status'];
         $model = @$param['model'];
 
-        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name AS cust_name, ng_items.part_no, master_product.model, ng_items.quantity, ng_items.remark, ng_items.empl_id, ng_items.status');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name AS cust_name, ng_items.part_no, master_product.model, ng_items.quantity, ng_items.remark, ng_items.empl_id, ng_items.status');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
         $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
@@ -75,7 +75,7 @@ class Ng_model extends CI_Model {
         if ($model !== 'all') {
             $this->db->where('part_no', $model);
         }
-        
+
         if ($this->session->level == 'CUS') {
             $this->db->where('ng_items.cust_id', $this->session->user_id);
         }
@@ -89,7 +89,7 @@ class Ng_model extends CI_Model {
         $end = @$param['enddate'];
         $customer = @$param['customer'];
 
-        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
         $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
@@ -106,18 +106,18 @@ class Ng_model extends CI_Model {
             $this->db->where('ng_items.cust_id', $customer);
         }
 
-        $this->db->where_in('status', array(0,1));
-        
+        $this->db->where_in('status', array(0, 1));
+
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function filter_page_ngcust($param) {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
         $customer = @$param['customer'];
 
-        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.ca_sub_date, ng_detail.ca_description, ng_detail.ca_file_name, ng_items.cust_id, ng_items.req_date');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ca_sub_date, ng_detail.ca_description, ng_detail.ca_file_name, ng_items.cust_id, ng_items.req_date');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
 
@@ -132,19 +132,19 @@ class Ng_model extends CI_Model {
         if ($customer != '') {
             $this->db->where('ng_items.cust_id', $customer);
         }
-        
-        $this->db->where_in('ng_items.status', array(1,2));
+
+        $this->db->where_in('ng_items.status', array(1, 2));
 
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function filter_page_ngcar($param) {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
         $customer = @$param['customer'];
 
-        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.car_sub_date, ng_detail.car_description, ng_detail.car_file_name, ng_items.cust_id, ng_items.req_date');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.car_sub_date, ng_detail.car_description, ng_detail.car_file_name, ng_items.cust_id, ng_items.req_date');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
 
@@ -159,19 +159,19 @@ class Ng_model extends CI_Model {
         if ($customer != '') {
             $this->db->where('ng_items.cust_id', $customer);
         }
-        
-        $this->db->where_in('status', array(2,3));
+
+        $this->db->where_in('status', array(2, 3));
 
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function filter_page_pengiriman($param) {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
         $customer = @$param['customer'];
 
-        $this->db->select('ng_detail.id, ng_detail.ng_item_id, ng_detail.out_sub_date, ng_detail.out_description, ng_detail.out_file_name, ng_items.cust_id, ng_items.req_date');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.out_sub_date, ng_detail.out_description, ng_detail.out_file_name, ng_items.cust_id, ng_items.req_date');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
 
@@ -186,13 +186,13 @@ class Ng_model extends CI_Model {
         if ($customer != '') {
             $this->db->where('ng_items.cust_id', $customer);
         }
-        
-        $this->db->where_in('status', array(3,4));
+
+        $this->db->where_in('status', array(3, 4));
 
         $query = $this->db->get();
         return $query->result_array();
     }
-    
+
     public function filter_page_analisasp($param) {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
@@ -215,12 +215,13 @@ class Ng_model extends CI_Model {
         if ($customer != '') {
             $this->db->where('ng_items.cust_id', $customer);
         }
-        
+
         //$this->db->where_in('status', array(3,4));
 
         $query = $this->db->get();
         return $query->result_array();
     }
+
     public function filter_page_sp($param) {
         $start = @$param['startdate'];
         $end = @$param['enddate'];
@@ -243,9 +244,22 @@ class Ng_model extends CI_Model {
         if ($customer != '') {
             $this->db->where('ng_items.cust_id', $customer);
         }
-        
+
         //$this->db->where_in('status', array(3,4));
 
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function filter_report_spa($id) {
+
+        $this->db->select('a.ng_item_id,b.req_date,b.cust_id, d.name AS cust_name, b.part_no, c.model AS model,b.quantity, a.sp_employee_id, a.sp_inspector_id, a.sp_sub_date, a.sp_file_name, (select name from lg_employee x where x.id = a.sp_employee_id) as empl_name,  (select name from lg_employee y where y.id = a.sp_inspector_id) as inspector_name');
+        $this->db->from('ng_detail a');
+        $this->db->join('ng_items b', 'b.id=a.ng_item_id');
+        $this->db->join('master_product c', 'c.part_no = b.part_no');
+        $this->db->join('lg_customer d', 'b.cust_id = d.id');
+        $this->db->where('a.ng_item_id', $id);
+        $this->db->where('b.id', $id);
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -257,11 +271,11 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
+
         // kalo delete turun status
-        if (empty(@$data['ng_sub_date'])){
+        if (empty(@$data['ng_sub_date'])) {
             $this->update_satus($data['ng_item_id'], 0);
-        }else{
+        } else {
             // kalo upload naek status
             $this->update_satus($data['ng_item_id'], 1);
         }
@@ -274,18 +288,17 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
-        
+
+
         // kalo delete turun status
-        if (empty(@$data['ca_sub_date'])){
+        if (empty(@$data['ca_sub_date'])) {
             $this->update_satus($data['ng_item_id'], 1);
-        }else{
+        } else {
             // kalo upload naek status
             $this->update_satus($data['ng_item_id'], 2);
         }
-        
     }
-    
+
     public function update_ngCar($data) {
         $this->db->set('car_sub_date', @$data['car_sub_date']);
         $this->db->set('car_description', @$data['car_description']);
@@ -293,18 +306,17 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
-        
+
+
         // kalo delete turun status
-        if (empty(@$data['car_sub_date'])){
+        if (empty(@$data['car_sub_date'])) {
             $this->update_satus($data['ng_item_id'], 2);
-        }else{
+        } else {
             // kalo upload naek status
             $this->update_satus($data['ng_item_id'], 3);
         }
-        
     }
-    
+
     public function update_pengiriman($data) {
         $this->db->set('out_sub_date', @$data['out_sub_date']);
         $this->db->set('out_description', @$data['out_description']);
@@ -312,18 +324,17 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
-        
+
+
         // kalo delete turun status
-        if (empty(@$data['out_sub_date'])){
+        if (empty(@$data['out_sub_date'])) {
             $this->update_satus($data['ng_item_id'], 3);
-        }else{
+        } else {
             // kalo upload naek status
             $this->update_satus($data['ng_item_id'], 4);
         }
-        
     }
-    
+
     public function update_sp($data) {
         $this->db->set('sp_sub_date', @$data['sp_sub_date']);
         $this->db->set('sp_employee_id', @$data['sp_employee_id']);
@@ -331,9 +342,8 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
     }
-    
+
     public function update_resultsp($data) {
         $this->db->set('spr_sub_date', @$data['spr_sub_date']);
         $this->db->set('spr_result', @$data['spr_result']);
@@ -341,17 +351,16 @@ class Ng_model extends CI_Model {
 
         $this->db->where('ng_item_id', $data['ng_item_id']);
         $this->db->update('ng_detail');
-        
     }
-    
+
     public function simpanDetail() {
-        $row['id'] = $this->sequences->getLastId('sqngdetail');
+//        $row['id'] = $this->sequences->getLastId('sqngdetail');
         $row['ng_item_id'] = $this->id;
 
         return $this->db->insert('ng_detail', $row);
     }
-    
-    public function update_satus($cust_id, $status){
+
+    public function update_satus($cust_id, $status) {
         $this->db->set('status', $status);
         $this->db->where('id', $cust_id);
         $this->db->update('ng_items');

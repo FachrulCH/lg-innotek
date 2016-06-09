@@ -83,7 +83,7 @@
                                         <td>';
                                 // kalo masih lom di upload tombol download jadi non
                                 if ($detail['sp_inspector_id'] !== null) {
-                                    echo'<a href="' . base_url() . 'report/spa/' . $detail['ng_item_id'] . '" class="btn btn-info btn-xs btn-print" target="_blank"><i class="fa fa-print"></i> Print</a> ';
+                                    echo'<a href="' . base_url() . 'report/spa/?spa=' . $detail['ng_item_id'] . '" class="btn btn-info btn-xs btn-print" target="_blank"><i class="fa fa-print"></i> Print</a> ';
                                     echo '<button class="btn btn-danger btn-xs btn-delete"><i class="fa fa-trash"></i> Delete</button>';
                                 } else {
                                     echo'<a href="#" class="btn btn-info btn-xs btn-print" disabled="disabled"><i class="fa fa-print"></i> Print</a> ';

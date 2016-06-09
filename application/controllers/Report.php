@@ -120,5 +120,32 @@ class Report extends CI_Controller {
         //atau jika tidak ingin menampilkan (tanpa) preview di halaman browser
         //$this->dompdf->stream("welcome.pdf");
     }
+    
+    public function spa() {
+        $get = $this->input->get();
+        $filter = $this->security->xss_clean($get);
+
+        if (@$filter['spa'] != null) {
+            $this->load->model('ng_model');
+            $rows = $this->ng_model->filter_report_spa($filter['spa']);
+            $data['detail'] = $rows[0];
+        } else {
+            $data['detail'] = array();
+        }
+        $this->load->view('report/spa_report', $data);
+        $html = $this->output->get_output();
+        // Load/panggil library dompdfnya
+        $this->load->library('dompdf_gen');
+
+        // Convert to PDF
+        $this->dompdf->load_html($html);
+//        $this->dompdf->set_base_path(realpath(APPPATH . '/assets/bootstrap/css/bootstrap.min.css'));
+        $this->dompdf->set_paper('A4', 'landscape');
+        $this->dompdf->render();
+        //utk menampilkan preview pdf
+        $this->dompdf->stream("ujicoba.pdf", array('Attachment' => 0));
+        //atau jika tidak ingin menampilkan (tanpa) preview di halaman browser
+        //$this->dompdf->stream("welcome.pdf");
+    }
 
 }

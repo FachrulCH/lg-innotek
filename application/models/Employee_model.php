@@ -84,7 +84,8 @@ class Employee_model extends CI_Model {
     }
     
     public function getInspector(){
-        $query   = $this->db->get_where('lg_employee', array('group'=>'INS'));
+        //$query   = $this->db->get_where('lg_employee', array('group'=>'INS'));
+        $query   = $this->db->get_where('lg_employee', array('group'=>'OQA'));
         return $query->result_array();
     }
     
