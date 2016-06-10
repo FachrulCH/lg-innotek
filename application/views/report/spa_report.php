@@ -55,7 +55,7 @@
                     <table id="spa">
                         <tr>
                             <td style="width: 60%">Request Date</td>
-                            <td><?= $detail['req_date'] ?></td>
+                            <td><?= format_tgl($detail['req_date']) ?></td>
                         </tr>
                         <tr>
                             <td>NG Id</td>

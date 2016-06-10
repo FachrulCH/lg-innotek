@@ -54,7 +54,7 @@ class Ng_model extends CI_Model {
         $status = @$param['status'];
         $model = @$param['model'];
 
-        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name AS cust_name, ng_items.part_no, master_product.model, ng_items.quantity, ng_items.remark, ng_items.empl_id, ng_items.status');
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name AS cust_name, ng_items.part_no, master_product.model, ng_items.quantity, ng_items.remark, ng_items.empl_id, ng_items.status, ng_detail.ca_file_name, ng_detail.car_file_name,ng_detail.sp_file_name, ng_detail.out_file_name');
         $this->db->from('ng_detail');
         $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
         $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
@@ -263,6 +263,137 @@ class Ng_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+    
+    public function filter_report_bycust($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+        $customer = @$param['customer'];
+
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, master_product.model AS model, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name, ng_items.quantity, ng_items.remark, ng_items.status, ng_items.empl_id as employee_id, ng_items.part_no');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
+        $this->db->join('master_product', 'master_product.part_no = ng_items.part_no');
+
+        if ($start) {
+            $this->db->where('ng_items.req_date >=', $start);
+        }
+
+        if ($end) {
+            $this->db->where('ng_items.req_date <=', $end);
+        }
+
+        if ($customer != '') {
+            $this->db->where('ng_items.cust_id', $customer);
+        }
+        
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    public function filter_report_bystatus($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+        $status = @$param['status'];
+
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, master_product.model AS model, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name, ng_items.quantity, ng_items.remark, ng_items.status, ng_items.empl_id as employee_id, ng_items.part_no');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
+        $this->db->join('master_product', 'master_product.part_no = ng_items.part_no');
+
+        if ($start) {
+            $this->db->where('ng_items.req_date >=', $start);
+        }
+
+        if ($end) {
+            $this->db->where('ng_items.req_date <=', $end);
+        }
+
+        if ($status != '') {
+            $this->db->where('ng_items.status', $status);
+        }
+        $query = $this->db->get();
+        return $query->result_array();
+        //return $this->db->last_query();
+    }
+    
+    public function filter_report_byemployee($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+        $filter = @$param['employee'];
+
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, master_product.model AS model, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name, ng_items.quantity, ng_items.remark, ng_items.status, ng_items.empl_id as employee_id, ng_items.part_no');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
+        $this->db->join('master_product', 'master_product.part_no = ng_items.part_no');
+
+        if ($start) {
+            $this->db->where('ng_items.req_date >=', $start);
+        }
+
+        if ($end) {
+            $this->db->where('ng_items.req_date <=', $end);
+        }
+
+        if ($filter != '') {
+            $this->db->where('ng_items.empl_id', $filter);
+        }
+        $query = $this->db->get();
+        return $query->result_array();
+        //return $this->db->last_query();
+    }
+    
+    public function filter_report_bymodel($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+        $filter = @$param['model'];
+
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, master_product.model AS model, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name, ng_items.quantity, ng_items.remark, ng_items.status, ng_items.empl_id as employee_id, ng_items.part_no');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
+        $this->db->join('master_product', 'master_product.part_no = ng_items.part_no');
+
+        if ($start) {
+            $this->db->where('ng_items.req_date >=', $start);
+        }
+
+        if ($end) {
+            $this->db->where('ng_items.req_date <=', $end);
+        }
+
+        if ($filter != '') {
+            $this->db->where('ng_items.part_no', $filter);
+        }
+        $query = $this->db->get();
+        return $query->result_array();
+        //return $this->db->last_query();
+    }
+    
+    public function filter_report_byperiodic($param) {
+        $start = @$param['startdate'];
+        $end = @$param['enddate'];
+
+        $this->db->select('ng_detail.ng_item_id as id, ng_detail.ng_item_id, ng_detail.ng_sub_date, master_product.model AS model, ng_detail.ng_result, ng_detail.ng_file_name, ng_items.cust_id, ng_items.req_date, lg_customer.name as cust_name, ng_items.quantity, ng_items.remark, ng_items.status, ng_items.empl_id as employee_id, ng_items.part_no');
+        $this->db->from('ng_detail');
+        $this->db->join('ng_items', 'ng_items.id=ng_detail.ng_item_id');
+        $this->db->join('lg_customer', 'ng_items.cust_id = lg_customer.id');
+        $this->db->join('master_product', 'master_product.part_no = ng_items.part_no');
+
+        if ($start) {
+            $this->db->where('ng_items.req_date >=', $start);
+        }
+
+        if ($end) {
+            $this->db->where('ng_items.req_date <=', $end);
+        }
+
+        $query = $this->db->get();
+        return $query->result_array();
+        //return $this->db->last_query();
+    }
 
     public function updateDetail($data) {
         $this->db->set('ng_sub_date', @$data['ng_sub_date']);
@@ -275,8 +406,10 @@ class Ng_model extends CI_Model {
         // kalo delete turun status
         if (empty(@$data['ng_sub_date'])) {
             $this->update_satus($data['ng_item_id'], 0);
+            $this->update_empl($data['ng_item_id'], null);
         } else {
             // kalo upload naek status
+            $this->update_empl($data['ng_item_id'], $this->session->user_id);
             $this->update_satus($data['ng_item_id'], 1);
         }
     }
@@ -364,6 +497,30 @@ class Ng_model extends CI_Model {
         $this->db->set('status', $status);
         $this->db->where('id', $cust_id);
         $this->db->update('ng_items');
+    }
+    
+    public function update_empl($cust_id, $empl_id) {
+        $this->db->set('empl_id', $empl_id);
+        $this->db->where('id', $cust_id);
+        $this->db->update('ng_items');
+    }
+    
+    public function getDashboard() {
+        $query = $this->db->query("select count(1) as jum, status from ng_items group by status;");
+        return $query->result_array();
+        
+    }
+    
+    public function getDashboardB() {
+        $query = $this->db->query("select * from ng_items order by req_date desc limit 5");
+        return $query->result_array();
+        
+    }
+    
+    public function getDashboardC() {
+        $query = $this->db->query("select count(1) jum, DATE_FORMAT(req_date,'%Y-%m') periode from ng_items WHERE YEAR(req_date) = YEAR(now()) group by MONTH(req_date)");
+        return $query->result_array();
+        
     }
 
 }

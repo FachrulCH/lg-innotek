@@ -1,128 +1,79 @@
 <!-- Main row -->
 <!-- Info boxes -->
+<link href="<?= base_url('assets/plugins/morris/morris.css'); ?>" rel="stylesheet" type="text/css" />
 <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">CPU Traffic</span>
-                <span class="info-box-number">90<small>%</small></span>
-            </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-    </div><!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-            </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-    </div><!-- /.col -->
+    <?php
+//    echo "<pre>";
+//    print_r($data_a);
+    $param = $this->session->param;
+    $param_status = $param['status'];
+    $status = array(
+        "0" => array(
+            "warna" => "bg-yellow",
+            "icon" => "fa-bug",
+            "label" => "label-warning"
+        ),
+        "1" => array(
+            "warna" => "bg-red",
+            "icon" => "fa-stethoscope",
+            "label" => "label-danger"
+        ),
+        "2" => array(
+            "warna" => "bg-blue",
+            "icon" => "fa-file-o",
+            "label" => "label-info"
+        ),
+        "3" => array(
+            "warna" => "bg-aqua",
+            "icon" => "fa-cog",
+            "label" => "label-primary"
+        ),
+        "4" => array(
+            "warna" => "bg-green",
+            "icon" => "fa-smile-o",
+            "label" => "label-success"
+        ),
+    );
+    foreach ($data_a as $status_count) {
+        ?>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon <?= $status[$status_count['status']]['warna'] ?>"><i class="fa <?= $status[$status_count['status']]['icon'] ?>"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text"><?= $param_status[$status_count['status']] ?></span>
+                    <span class="info-box-number"><?= $status_count['jum'] ?> <small>data</small></span>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </div><!-- /.col -->
+        <?php
+    }
+    ?>
 
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
-            </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-    </div><!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
-            </div><!-- /.info-box-content -->
-        </div><!-- /.info-box -->
-    </div><!-- /.col -->
 </div><!-- /.row -->
 
 <div class="row">
     <div class="col-md-8">
-        <!-- TABLE: LATEST ORDERS -->
+
+        <!-- LINE CHART -->
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Latest Orders</h3>
+                <h3 class="box-title">Jumlah NG data tahun ini</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table no-margin">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Item</th>
-                                <th>Status</th>
-                                <th>Popularity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Call of Duty IV</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                                <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>iPhone 6 Plus</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                                <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="label label-info">Processing</span></td>
-                                <td><div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                                <td><div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>iPhone 6 Plus</td>
-                                <td><span class="label label-danger">Delivered</span></td>
-                                <td><div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div></td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Call of Duty IV</td>
-                                <td><span class="label label-success">Shipped</span></td>
-                                <td><div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div><!-- /.table-responsive -->
+            </div>
+            <div class="box-body chart-responsive">
+                <div class="chart" id="line-chart" style="height: 300px;"></div>
             </div><!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <a href="javascript::;" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-                <a href="javascript::;" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
-            </div><!-- /.box-footer -->
         </div><!-- /.box -->
+
     </div><!-- /.col -->
     <div class="col-md-4">
         <!-- PRODUCT LIST -->
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Recently Added Products</h3>
+                <h3 class="box-title">Recently Added NG Data</h3>
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -130,44 +81,60 @@
             </div><!-- /.box-header -->
             <div class="box-body">
                 <ul class="products-list product-list-in-box">
-                    <li class="item">
-                        <div class="product-img">
-                            <img src="<?= base_url(); ?>assets/dist/img/default-50x50.gif" alt="Product Image"/>
-                        </div>
-                        <div class="product-info">
-                            <a href="javascript::;" class="product-title">Bicycle <span class="label label-info pull-right">$700</span></a>
-                            <span class="product-description">
-                                26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                            </span>
-                        </div>
-                    </li><!-- /.item -->
-                    <li class="item">
-                        <div class="product-img">
-                            <img src="<?= base_url(); ?>assets/dist/img/default-50x50.gif" alt="Product Image"/>
-                        </div>
-                        <div class="product-info">
-                            <a href="javascript::;" class="product-title">Xbox One <span class="label label-danger pull-right">$350</span></a>
-                            <span class="product-description">
-                                Xbox One Console Bundle with Halo Master Chief Collection.
-                            </span>
-                        </div>
-                    </li><!-- /.item -->
-                    <li class="item">
-                        <div class="product-img">
-                            <img src="<?= base_url(); ?>assets/dist/img/default-50x50.gif" alt="Product Image"/>
-                        </div>
-                        <div class="product-info">
-                            <a href="javascript::;" class="product-title">PlayStation 4 <span class="label label-success pull-right">$399</span></a>
-                            <span class="product-description">
-                                PlayStation 4 500GB Console (PS4)
-                            </span>
-                        </div>
-                    </li><!-- /.item -->
+                    <?php
+                    foreach ($data_b as $data_b) {
+                        ?>
+                        <li class="item">
+                            <div class="product-img">
+                                <img src="<?= base_url(); ?>assets/dist/img/default-50x50.gif" alt="Product Image"/>
+                            </div>
+                            <div class="product-info">
+                                <a href="javascript::;" class="product-title"><?= $data_b['cust_id'] ?> <span class="label <?= $status[$data_b['status']]['label'] ?> pull-right"><?= $param_status[$data_b['status']] ?></span></a>
+                                <span class="product-description">
+                                    <?= $data_b['part_no'] . "-" . $data_b['remark'] ?>
+                                </span>
+                            </div>
+                        </li><!-- /.item -->
+                        <?php
+                    }
+                    ?>
                 </ul>
             </div><!-- /.box-body -->
-            <div class="box-footer text-center">
-                <a href="javascript::;" class="uppercase">View All Products</a>
-            </div><!-- /.box-footer -->
         </div><!-- /.box -->
     </div><!-- /.col -->
 </div><!-- /.row -->
+
+<script src="<?= base_url('assets/js/raphael-min.js'); ?>" type="text/javascript"></script>
+<script src="<?= base_url('assets/plugins/morris/morris.min.js'); ?>" type="text/javascript"></script>
+<script>
+// LINE CHART
+    var line = new Morris.Line({
+        element: 'line-chart',
+        resize: true,
+        data: [
+//                      {y: '2016-01', item1: 6},
+//            {y: '2016-02', item1: 7},
+//            {y: '2016-03', item1: 8},
+//            {y: '2016-04', item1: 5},
+//            {y: '2016-05', item1: 4},
+//            {y: '2016-06', item1: 7}
+<?php
+foreach ($data_c as $k => $periode) {
+    if ($k == 0) {
+        echo "{y: '" . $periode['periode'] . "', item1: " . $periode['jum'] . "}";
+    } else {
+        echo "
+        ,{y: '" . $periode['periode'] . "', item1: " . $periode['jum'] . "}
+         ";
+    }
+}
+?>
+        ],
+        xkey: 'y',
+        ykeys: ['item1'],
+        labels: ['Jumlah'],
+        xLabels: "month",
+        lineColors: ['#3c8dbc'],
+        hideHover: 'auto'
+    });
+</script>

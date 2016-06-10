@@ -11,9 +11,41 @@ class Dashboard extends CI_Controller {
     }
 
     public function index() {
+        $this->load->model('ng_model');
+        $data_c = $this->ng_model->getDashboardC();
+        
+        foreach ($data_c as $i => $v){
+            $data_c[$i]['jum'] = (int) $v['jum'];
+        }
+        
+        $data['data_a'] = $this->ng_model->getDashboard();
+        $data['data_b'] = $this->ng_model->getDashboardB();
+        $data['data_c'] = $data_c;
+        
         if ($this->session->logged_in) {
             $this->load->view('design/header');
-            $this->load->view('dashboard/admin');
+            $this->load->view('dashboard/admin', $data);
+            $this->load->view('design/footer');
+        } else {
+            redirect('/');
+        }
+    }
+    
+    public function admin() {
+        $this->load->model('ng_model');
+        $data_c = $this->ng_model->getDashboardC();
+        
+        foreach ($data_c as $i => $v){
+            $data_c[$i]['jum'] = (int) $v['jum'];
+        }
+        
+        $data['data_a'] = $this->ng_model->getDashboard();
+        $data['data_b'] = $this->ng_model->getDashboardB();
+        $data['data_c'] = $data_c;
+        
+        if ($this->session->logged_in) {
+            $this->load->view('design/header');
+            $this->load->view('dashboard/admin', $data);
             $this->load->view('design/footer');
         } else {
             redirect('/');

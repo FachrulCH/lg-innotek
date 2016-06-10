@@ -58,7 +58,8 @@ TABEL = {
         if (TABEL.obj.length === undefined) {
             TABEL.obj = $(this.name).DataTable({
                 data: this.data,
-                columns: this.kolom
+                columns: this.kolom,
+                scrollX: true
             });
         }else{
             TABEL.obj.clear().rows.add(TABEL.data).draw();

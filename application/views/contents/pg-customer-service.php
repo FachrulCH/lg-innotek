@@ -85,12 +85,12 @@
                 <?php
                 if ($this->session->level == 'CUS' || $this->session->level === 'ADM') {
                     $btn_status = "";
-                }else{
+                } else {
                     $btn_status = "disabled='disabled'";
                 }
                 ?>
                 <button class="btn btn-success" id="btn-add" <?= $btn_status ?>> <i class="fa fa-plus"></i> Request Service</button>
-                <button class="btn btn-default" id="btn-print"> <i class="fa fa-print"></i> Print</button>
+                <a href="#" target="_blank" class="btn btn-default" id="btn-print"> <i class="fa fa-print"></i> Print</a>
             </div><!-- /.box-body -->
         </div><!-- /.box -->
     </div><!-- /.col -->
@@ -258,6 +258,7 @@
             loading_on();
             WS.data = data;
             $('#btn-print').hide();
+            linkKosong = '(kosong)';
             WS.post('nghistory', function () {
 
                 setTimeout(function () {
@@ -283,23 +284,39 @@
                         {data: 'quantity'},
                         {data: 'remark'},
                         {
-                            data: 'id', render: function (id) {
-                                return '<a href="#">Detail</a>';
+                            data: 'ng_file_name', render: function (ng_file_name) {
+                                if (ng_file_name) {
+                                    return '<a href="' + base_url + 'unduh/file/' + ng_file_name + '"><i class="fa fa-download fa-2x"></i></a>';
+                                } else {
+                                    return linkKosong;
+                                }
                             }
                         },
                         {
-                            data: 'id', render: function (id) {
-                                return '<a href="#">Detail</a>';
+                            data: 'ca_file_name', render: function (ca_file_name) {
+                                if (ca_file_name) {
+                                    return '<a href="' + base_url + 'unduh/file/' + ca_file_name + '"><i class="fa fa-download fa-2x"></i></a>';
+                                } else {
+                                    return linkKosong;
+                                }
                             }
                         },
                         {
-                            data: 'id', render: function (id) {
-                                return '<a href="#">Detail</a>';
+                            data: 'car_file_name', render: function (car_file_name) {
+                                if (car_file_name) {
+                                    return '<a href="' + base_url + 'unduh/file/' + car_file_name + '"><i class="fa fa-download fa-2x"></i></a>';
+                                } else {
+                                    return linkKosong;
+                                }
                             }
                         },
                         {
-                            data: 'id', render: function (id) {
-                                return '<a href="#">Detail</a>';
+                            data: 'out_file_name', render: function (out_file_name) {
+                                if (out_file_name) {
+                                    return '<a href="' + base_url + 'unduh/file/' + out_file_name + '"><i class="fa fa-download fa-2x"></i></a>';
+                                } else {
+                                    return linkKosong;
+                                }
                             }
                         },
                         {data: 'empl_id'},
