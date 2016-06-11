@@ -154,14 +154,10 @@
                     <div class="form-group">
                         <label for="cust-name" class="col-sm-3 control-label">Nama Staff</label>
                         <div class="col-sm-9">
-                            <select class="form-control" name="mdl_staff_id">
-                                <option>-Pilih Staff-</option>
-                                <?php
-                                    foreach ($list_staff as $staff) {
-                                        echo '<option value="' . $staff['id'] . '">' . $staff['id'] . '-' .$staff['name'] . '</option>';
-                                    }
-                                    ?>
+                            <select class="form-control" name="mdl_staff_id2" disabled="">
+                                <option><?= $this->session->user_id ."-".$this->session->username ?></option>
                             </select>
+                            <input type="hidden" name="mdl_staff_id" value="<?= $this->session->user_id ?>">
                         </div>
                     </div>
                     <div class="form-group">
