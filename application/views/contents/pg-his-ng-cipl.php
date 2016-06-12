@@ -4,7 +4,7 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">History Detail NG Customer</h3>
+                <h3 class="box-title">History CIPL & AWB Customer</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="div-filter">                    
