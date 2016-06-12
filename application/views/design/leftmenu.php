@@ -64,7 +64,7 @@
                 </li>
                 <?php
             }
-            if ($this->session->level != 'CUS') {
+            if ($this->session->level != 'CUS' && $this->session->level != 'INC') {
                 ?>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-mortar-board"></i> <span>Analisa</span> <i class="fa fa-angle-left pull-right"></i></a>
