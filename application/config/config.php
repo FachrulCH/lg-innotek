@@ -19,8 +19,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $servername=filter_input(INPUT_SERVER, 'SERVER_NAME');
 $port=filter_input(INPUT_SERVER, 'SERVER_PORT');
-//$config['base_url']	= 'http://'.$servername.":".$port.'/ci3_adminlte/';
-$config['base_url']	= 'http://'.$servername.":".$port.'/PRJ/lg/';
+//$config['base_url']	= 'http://'.$servername.":".$port.'/PRJ/lg/';
+$config['base_url']	= 'http://'.$servername.":".$port.'/lg-innotek/';
 
 /*
 |--------------------------------------------------------------------------
