@@ -522,5 +522,26 @@ class Ng_model extends CI_Model {
         return $query->result_array();
         
     }
+    
+    public function getDashboard_cust() {
+        $cust_id = $this->session->user_id;
+        $sql = "select count(1) as jum, status from ng_items where cust_id = '".$cust_id."' group by status;";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    
+    public function getDashboardB_cust() {
+        $cust_id = $this->session->user_id;
+        $query = $this->db->query("select * from ng_items where cust_id = '".$cust_id."' order by req_date desc limit 5");
+        return $query->result_array();
+        
+    }
+    
+    public function getDashboardC_cust() {
+        $cust_id = $this->session->user_id;
+        $query = $this->db->query("select count(1) jum, DATE_FORMAT(req_date,'%Y-%m') periode from ng_items WHERE YEAR(req_date) = YEAR(now()) AND cust_id = '".$cust_id."' group by MONTH(req_date)");
+        return $query->result_array();
+        
+    }
 
 }
